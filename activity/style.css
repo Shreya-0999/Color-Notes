@@ -1,0 +1,147 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    margin: 0;
+    background: rgb(221, 190, 191);
+    font-family: 'Oswald', sans-serif;
+}
+/* --------------------naviagtion------------------ */
+.navigation_container{
+    height: 12vh;
+    display: flex;
+    align-items: center;
+    background-color: rgb(51, 49, 49);
+}
+.navigation{
+    height: 60%;
+    margin-left: 5rem;
+    border-radius: 0.3rem;
+    background-color: rgb(90, 92, 94);
+}
+.color_filter{
+    width: 14rem;
+    display: flex;
+}
+.filter{
+    height: 100%;
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.color{
+    height: 50%;
+    width: 50%;
+    border-radius: 0.2rem;
+}
+.pink{
+    background: rgb(223, 119, 137);
+}
+.blue{
+    background: rgb(115, 161, 221);
+}
+.green{
+    background: rgb(119, 214, 110);
+}
+.black{
+    background: rgb(37, 36, 36);
+}
+.editing_option{
+    width: 8rem;
+    display: flex;
+}
+.icon_container{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.fas{
+    font-size: 1.6rem;
+}
+.active{
+    background: rgb(73, 71, 71);
+}
+
+/* --------------------Main Area------------------ */
+.main_container{
+    height: 90vh;
+    padding: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    overflow: auto;
+}
+
+/* ------------ Modal Container -------------------- */
+.modal_container{
+    height: 18rem;
+    width: 36rem;
+    position: absolute;
+    left: calc((100vw - 36rem)/2);   /* to keep it in center */
+    top: 30vh;
+    display: flex;
+    overflow: auto;
+}
+.input_container{
+    height: 100%;
+    width: 73%;
+}
+.modal_input{
+    height: 100%;
+    width: 100%;
+    padding: 2rem;
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 145%;
+    outline: none;          /* to remove the outline from the input area when clicked */
+}
+.modal_filter{
+    height: 100%;
+    width: 27%;
+    background-color: rgb(58, 56, 56);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 1.7rem 1.2rem;
+}
+
+.modal_filter>.filter{
+    height: 15%;
+    width: 60%;
+    
+}
+
+.border{
+    border: 0.2rem solid rgb(7, 7, 7);
+}
+
+/* -------------Task Container ----------------- */
+.task_container{
+    height: 10rem;
+    width: 16rem;
+    margin: 1rem 0.5rem;
+    background-color: rgb(219, 218, 218);
+}
+.color_bar{
+    height: 10%;
+}
+.task_description{
+    height: 90%;
+    width: 100%;
+    padding: 0 1rem;
+}
+.uid{
+    margin-top: 0.7rem;
+    margin-bottom: 0.3rem;
+    color: #444;
+}
+.task_area{
+    height: 65%;
+    overflow: auto;
+    word-break: break-all;   /* to break the words */
+    text-align: center;
+}
