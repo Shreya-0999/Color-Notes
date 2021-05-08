@@ -1,12 +1,15 @@
 `use strict`
 let editing_options = document.querySelectorAll(".icon_container");
 let main_container = document.querySelector(".main_container");
+let colorBtn = document.querySelectorAll(".filter");
 let body = document.body;
 let plusBtn = editing_options[0];
 let crossBtn = editing_options[1];
 let deleteState = false;
 let taskArr = [];
 
+
+//---------------Local Storage-----------------
 // display all the task stored in the local storage i.e retreive the data from the local storage
 if (localStorage.getItem("allTask")) {
     taskArr = JSON.parse(localStorage.getItem("allTask"));   // to convert the string recived to an object
@@ -16,13 +19,65 @@ if (localStorage.getItem("allTask")) {
         createTask(color, task, false, uid); // false to tell that its from local storage
     }
 }
+console.log(taskArr);
 
+//---------------Navigation Functionality-----------------
 plusBtn.addEventListener("click", createModal);
 crossBtn.addEventListener("click", setDeleteState);  // to change the state of button from off to on or vice versa
 
+// Activating color buttons
+for (let i = 0; i < colorBtn.length; i++) {
+    colorBtn[i].addEventListener("click", function () {
+        let isActive = colorBtn[i].classList.contains("active");
+        if (isActive) {
+            colorBtn[i].classList.remove("active");
+            changeFilter(null);  // if no filter color is selected
+        } else {
+            // removing active class from other color so that no two color are selected at same time.
+            for (let i = 0; i < colorBtn.length; i++) {
+                colorBtn[i].classList.remove("active");
+            }
+            colorBtn[i].classList.add("active");   // highlighting the color selected by adding active class
+            let displayColor = colorBtn[i].children[0].classList[0]; // getting the color selected
+            changeFilter(displayColor);
+        }
+    })
+}
+
+function changeFilter(displayColor) {
+    let task_container = document.querySelectorAll(".task_container");  // getting all the task container present
+    if (task_container) { // task container present then
+        for (let i = 0; i < task_container.length; i++) {
+            let taskColor = task_container[i].children[0].classList[1];  // extracting its filter color
+            if (displayColor == null) {  // if no filter color is selected then display all of them
+                task_container[i].style.display = "block";
+            }
+            else if (displayColor != taskColor) {
+                task_container[i].style.display = "none";  // if color extracted is not equal to the color selected then remove the task container
+            }
+            else if (displayColor == taskColor) {
+                task_container[i].style.display = "block"; // if equal then display
+            }
+        }
+    }
+    if (displayColor == "pink")
+        body.style.backgroundColor = "rgb(245, 222, 229)";
+    else if (displayColor == "blue")
+        body.style.backgroundColor = "rgb(222, 235, 245)";
+    else if (displayColor == "green")
+        body.style.backgroundColor = "rgb(228, 245, 238)";
+    else if (displayColor == "black")
+        body.style.backgroundColor = "rgb(215, 218, 221)";
+    else{
+        body.style.backgroundColor = "rgb(238, 242, 247)";
+    }
+}
+
+//---------------Creating Modal for adding new task-----------------
 function createModal() {
     let modal_container = document.querySelector(".modal_container");
     if (modal_container == null) {       // to check whether the container is already present of not
+        plusBtn.classList.add("active");  // change its backgroung to tell its active
         modal_container = document.createElement("div");
         modal_container.setAttribute("class", "modal_container");     //setting its class = modal_container
         //adding html of the conntainer
@@ -38,8 +93,12 @@ function createModal() {
         body.appendChild(modal_container);   //attaching it to the body (whenever plusbtn will be clicked this modal will be attached to the body)
         handleModal(modal_container);     // for handling the actions inside the modal container
     }
-    let input = modal_container.querySelector(".modal_input");
-    input.value = "";   // if the conatiner is already present then clear its value
+    else {
+        modal_container.remove();
+        plusBtn.classList.remove("active");   // to remove the active feature
+    }
+    // let input = modal_container.querySelector(".modal_input");
+    // input.value = "";   // if the conatiner is already present then clear its value
 }
 
 function handleModal(modal_container) {
@@ -51,6 +110,7 @@ function handleModal(modal_container) {
             // removing the border class from all of the filter color available
             modal_filters.forEach((filter) => {
                 filter.classList.remove("border");
+                console.log(filter);
             })
             // adding the border class to the filter color clicked
             modal_filters[i].classList.add("border");
@@ -61,12 +121,14 @@ function handleModal(modal_container) {
     let input_area = modal_container.querySelector(".modal_input");
     input_area.addEventListener("keydown", function (e) {
         if (e.key == "Enter" && input_area != null) {   // as the enter bttn is pressed perform following task
+            plusBtn.classList.remove("active");
             modal_container.remove();         // removing the modal container
             createTask(current_color, input_area.value, true);   // creating the task on the body with the color and the task entered(true : to tell its entered from the UI not local storage)
         }
     })
 }
 
+//---------------Creating and editing Task-----------------
 function createTask(color, task, flag, id) {
     // creating the task container 
     let task_container = document.createElement("div");
@@ -135,7 +197,7 @@ function editTask(e) {
         }
     }
 }
-
+//---------------Deleting Task-----------------
 function setDeleteState(e) {
     let crossBtn = e.currentTarget;
     if (deleteState == false) {
