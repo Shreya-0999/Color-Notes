@@ -43,6 +43,8 @@ div.color_filter div.filter:hover{
     opacity: 1;
     box-shadow: inset 0 0 10px #1616167e;
     background-color: rgba(65, 64, 64, 0.527);
+    border-radius: 0.3rem;
+    
 }
 .color{
     height: 50%;
@@ -78,6 +80,7 @@ div.icon_container:hover{
     opacity: 1;
     box-shadow: inset 0 0 15px #1616167e;
     background-color: rgba(65, 64, 64, 0.527);
+    border-radius: 0.3rem;
 }
 .fas{
     font-size: 1.6rem;
@@ -114,6 +117,7 @@ div.icon_container:hover{
     0 12.5px 10px rgba(0, 0, 0, 0.06),
     0 22.3px 17.9px rgba(0, 0, 0, 0.072),
     0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12),
     0 100px 80px rgba(0, 0, 0, 0.12);
 }
 .input_container{
@@ -143,10 +147,12 @@ div.icon_container:hover{
 .modal_filter>.filter{
     height: 15%;
     width: 60%;
+    box-shadow: inset 0 0 15px #1616167e;
 }
 
 div.modal_filter div.filter:hover{
     opacity: 1;
+    box-shadow: none;
 }
 
 .border{
@@ -170,19 +176,70 @@ div.modal_filter div.filter:hover{
 .color_bar{
     height: 10%;
 }
+.color_bar:hover{
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgb(75, 75, 77);
+}
 .task_description{
     height: 90%;
     width: 100%;
     padding: 0 1rem;
 }
+.task_header{
+    display: flex;
+}
 .uid{
-    margin-top: 0.7rem;
+    width: 85%;
+    margin-top: 2%;
     margin-bottom: 0.3rem;
     color: #444;
+}
+.task_icon_container{
+    margin-top: 2%;
+    width: 12%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.task_icon_container:hover{
+    background-color: rgb(240, 241, 243);
+    box-shadow: inset 0 0 15px #1616167e;
+    border-radius: 0.3rem;
+}
+.task_icon_container>.fas{
+    font-size: 1.2rem;
+}
+.task_icon_active{
+    box-shadow: inset 0 0 15px #1616167e;
+    border-radius: 0.3rem;
 }
 .task_area{
     height: 65%;
     overflow: auto;
     word-break: break-all;   /* to break the words */
     text-align: center;
+}
+
+/* ----------Responsive----------- */
+@media only screen and (max-width: 700px) {
+    .navigation{
+        margin-left: 2rem;
+    }
+    .color_filter{
+        width: 12rem;
+    }
+    .editing_option{
+        width: 5rem;
+    }
+    .task_container{
+        height: 8rem;
+        width: 14rem;
+    }
+    .task_area{
+        height: 60%;
+    }
+    .modal_container{
+        height: 16rem;
+        width: 33rem;
+    }
 }

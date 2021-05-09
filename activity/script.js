@@ -25,7 +25,7 @@ console.log(taskArr);
 plusBtn.addEventListener("click", createModal);
 crossBtn.addEventListener("click", setDeleteState);  // to change the state of button from off to on or vice versa
 
-// Activating color buttons
+// Activating color buttons in the navigation bar
 for (let i = 0; i < colorBtn.length; i++) {
     colorBtn[i].addEventListener("click", function () {
         let isActive = colorBtn[i].classList.contains("active");
@@ -68,7 +68,7 @@ function changeFilter(displayColor) {
         body.style.backgroundColor = "rgb(228, 245, 238)";
     else if (displayColor == "black")
         body.style.backgroundColor = "rgb(215, 218, 221)";
-    else{
+    else {
         body.style.backgroundColor = "rgb(238, 242, 247)";
     }
 }
@@ -96,12 +96,14 @@ function createModal() {
     else {
         modal_container.remove();
         plusBtn.classList.remove("active");   // to remove the active feature
+        main_container.style.opacity = 1;
     }
     // let input = modal_container.querySelector(".modal_input");
     // input.value = "";   // if the conatiner is already present then clear its value
 }
 
 function handleModal(modal_container) {
+    main_container.style.opacity = 0.5;
     let current_color = "black";    // the default color is black
     let modal_filters = document.querySelectorAll(".modal_filter .filter");  // extracting all the filter color available
     modal_filters[3].classList.add("border");    // adding border class to the default color
@@ -123,6 +125,7 @@ function handleModal(modal_container) {
         if (e.key == "Enter" && input_area != null) {   // as the enter bttn is pressed perform following task
             plusBtn.classList.remove("active");
             modal_container.remove();         // removing the modal container
+            main_container.style.opacity = 1;
             createTask(current_color, input_area.value, true);   // creating the task on the body with the color and the task entered(true : to tell its entered from the UI not local storage)
         }
     })
@@ -137,8 +140,16 @@ function createTask(color, task, flag, id) {
     let uid = id || uifn();
     task_container.innerHTML = `<div class="color_bar ${color}"></div>
     <div class="task_description">
+    <div class= "task_header">
         <h3 class="uid">${uid}</h3>
-        <div class="task_area" contenteditable = "true">${task}</div>
+        <div class="task_icon_container">
+            <i class="fas fa-pencil-alt"></i>
+        </div>
+        <div class="task_icon_container">
+            <i class="fas fa-expand"></i>
+        </div>
+    </div>
+        <div class="task_area">${task}</div>
     </div>`
     main_container.appendChild(task_container);
     if (flag == true) {  // it is from UI then add it to local storage
@@ -152,8 +163,36 @@ function createTask(color, task, flag, id) {
     let color_bar = task_container.querySelector(".color_bar");
     color_bar.addEventListener("click", changeColor);
 
-    // if their is any editing done on the task then it must be reflected back into the local storage
     let task_area = task_container.querySelector(".task_area");
+    // getting the edit option available in the task container
+    let task_iconArr = task_container.querySelectorAll(".task_icon_container");
+    // On clicking the pencil icon the content will become editable
+    let pencilBtn = task_iconArr[0];
+    pencilBtn.addEventListener("click", function(){
+        let isActive = pencilBtn.classList.contains("task_icon_active");
+        if(isActive){
+            pencilBtn.classList.remove("task_icon_active");
+            task_area.setAttribute("contenteditable", "false")
+        }
+        else{
+            pencilBtn.classList.add("task_icon_active");
+            task_area.setAttribute("contenteditable", "true")
+        }
+        // console.log(pencilBtn)
+    })
+
+    let expandBtn = task_iconArr[1];
+    expandBtn.addEventListener("click", function(){
+        let isActive = expandBtn.classList.contains("task_icon_active");
+        if(isActive){
+            expandBtn.classList.remove("task_icon_active");
+        }
+        else{
+            expandBtn.classList.add("task_icon_active");
+        }
+    })
+
+    // if their is any editing done on the task then it must be reflected back into the local storage
     task_area.addEventListener("keypress", editTask);
 
     // to delete any task if the delete state  is true
