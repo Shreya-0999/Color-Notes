@@ -14,7 +14,7 @@ let taskArr = [];
 if (localStorage.getItem("allTask")) {
     taskArr = JSON.parse(localStorage.getItem("allTask"));   // to convert the string recived to an object
     for (let i = 0; i < taskArr.length; i++) {
-        let { color, task, uid , heading} = taskArr[i];
+        let { color, task, uid, heading } = taskArr[i];
         // to display it on UI
         createTask(color, task, false, heading, uid); // false to tell that its from local storage
     }
@@ -74,7 +74,8 @@ function changeFilter(displayColor) {
 
 //---------------Creating Modal for adding new task-----------------
 function createModal(task, flag, color, uid, heading, expandBtn) {
-    if (typeof (task) == "object" ) {   // done for expanding feature to check that whether it is called from expand button or plusbtn (if plusbtn then it will have object inside it)
+    console.log("i ran")
+    if (typeof (task) == "object") {   // done for expanding feature to check that whether it is called from expand button or plusbtn (if plusbtn then it will have object inside it)
         task = "";
         heading = ""
     }
@@ -94,7 +95,9 @@ function createModal(task, flag, color, uid, heading, expandBtn) {
                 <div class="blue filter"></div>
                 <div class="green filter"></div>
                 <div class="black filter"></div>
-            </div>`
+                <div class="enter">E N T E R</div>
+                </div>
+            `
         body.appendChild(modal_container);   //attaching it to the body (whenever plusbtn will be clicked this modal will be attached to the body)
         if (flag)
             expandModal(modal_container, color, uid, expandBtn);
@@ -125,10 +128,11 @@ function handleModal(modal_container) {
         })
     }
     // adding eventlistner to the text area
+    let enterBtn = modal_container.querySelector(".enter");
     let input_area = modal_container.querySelector(".modal_input");
     let header_input = modal_container.querySelector(".modal_heading");
-    input_area.addEventListener("keydown", function (e) {
-        if (e.key == "Enter" && input_area != null) {   // as the enter bttn is pressed perform following task
+    enterBtn.addEventListener("click", function (e) {
+        if (input_area != null) {   // as the enter bttn is pressed perform following task
             plusBtn.classList.remove("active");
             modal_container.remove();         // removing the modal container
             main_container.style.opacity = 1;
@@ -158,9 +162,10 @@ function expandModal(modal_container, color, uid, expandBtn) {
     for (let i = 0; i < uidArr.length; i++)   // matching all the uids with the one that has been selected 
         if (uid == uidArr[i])
             task_cont = uidArr[i].parentNode.parentNode;   // storing the task_container of the matched uid to reflect the changes in the task_area
+    let enterBtn = modal_container.querySelector(".enter");
     let input_area = modal_container.querySelector(".modal_input");   // as the enter key is pressed in the modal container
-    input_area.addEventListener("keydown", function (e) {
-        if (e.key == "Enter" && input_area != null) {
+    enterBtn.addEventListener("click", function (e) {
+        if (input_area != null) {
             modal_container.remove();                                 // it will remove the modal container
             let t_a = task_cont.querySelector(".task_area");          // get the task_area of the container
             t_a.innerText = input_area.value;                         // and reflect the changes done that has been made to the modal
@@ -194,7 +199,7 @@ function createTask(color, task, flag, heading, id) {
     </div>`
     main_container.appendChild(task_container);
     if (flag == true) {  // it is from UI then add it to local storage
-        let obj = { "task": task, "color": color, "uid": uid , "heading": heading};
+        let obj = { "task": task, "color": color, "uid": uid, "heading": heading };
         taskArr.push(obj);
         let finalArr = JSON.stringify(taskArr);
         localStorage.setItem("allTask", finalArr); // accepts key: value(string)
