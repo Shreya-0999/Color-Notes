@@ -14,9 +14,9 @@ let taskArr = [];
 if (localStorage.getItem("allTask")) {
     taskArr = JSON.parse(localStorage.getItem("allTask"));   // to convert the string recived to an object
     for (let i = 0; i < taskArr.length; i++) {
-        let { color, task, uid } = taskArr[i];
+        let { color, task, uid , heading} = taskArr[i];
         // to display it on UI
-        createTask(color, task, false, uid); // false to tell that its from local storage
+        createTask(color, task, false, heading, uid); // false to tell that its from local storage
     }
 }
 
@@ -73,9 +73,10 @@ function changeFilter(displayColor) {
 }
 
 //---------------Creating Modal for adding new task-----------------
-function createModal(task, flag, color, uid, expandBtn) {
-    if (typeof (task) == "object") {   // done for expanding feature to check that whether it is called from expand button or plusbtn (if plusbtn then it will have object inside it)
+function createModal(task, flag, color, uid, heading, expandBtn) {
+    if (typeof (task) == "object" ) {   // done for expanding feature to check that whether it is called from expand button or plusbtn (if plusbtn then it will have object inside it)
         task = "";
+        heading = ""
     }
     let modal_container = document.querySelector(".modal_container");
     if (modal_container == null) {       // to check whether the container is already present of not
@@ -85,6 +86,7 @@ function createModal(task, flag, color, uid, expandBtn) {
         modal_container.setAttribute("class", "modal_container");     //setting its class = modal_container
         //adding html of the conntainer
         modal_container.innerHTML = `<div class="input_container">    
+                <textarea class="modal_heading" placeholder = "Enter your topic">${heading}</textarea>
                 <textarea class="modal_input" placeholder = "Enter your task">${task}</textarea>
             </div>
             <div class="modal_filter"> 
@@ -124,12 +126,13 @@ function handleModal(modal_container) {
     }
     // adding eventlistner to the text area
     let input_area = modal_container.querySelector(".modal_input");
+    let header_input = modal_container.querySelector(".modal_heading");
     input_area.addEventListener("keydown", function (e) {
         if (e.key == "Enter" && input_area != null) {   // as the enter bttn is pressed perform following task
             plusBtn.classList.remove("active");
             modal_container.remove();         // removing the modal container
             main_container.style.opacity = 1;
-            createTask(current_color, input_area.value, true);   // creating the task on the body with the color and the task entered(true : to tell its entered from the UI not local storage)
+            createTask(current_color, input_area.value, true, header_input.value);   // creating the task on the body with the color and the task entered(true : to tell its entered from the UI not local storage)
         }
     })
 }
@@ -154,7 +157,7 @@ function expandModal(modal_container, color, uid, expandBtn) {
     let uidArr = document.querySelectorAll(".uid");  // collecting the all the uid present in the document
     for (let i = 0; i < uidArr.length; i++)   // matching all the uids with the one that has been selected 
         if (uid == uidArr[i])
-            task_cont = uidArr[i].parentNode.parentNode.parentNode;   // storing the task_container of the matched uid to reflect the changes in the task_area
+            task_cont = uidArr[i].parentNode.parentNode;   // storing the task_container of the matched uid to reflect the changes in the task_area
     let input_area = modal_container.querySelector(".modal_input");   // as the enter key is pressed in the modal container
     input_area.addEventListener("keydown", function (e) {
         if (e.key == "Enter" && input_area != null) {
@@ -168,16 +171,18 @@ function expandModal(modal_container, color, uid, expandBtn) {
 }
 
 //---------------Creating and editing Task-----------------
-function createTask(color, task, flag, id) {
+function createTask(color, task, flag, heading, id) {
     // creating the task container 
     let task_container = document.createElement("div");
     task_container.setAttribute("class", "task_container");
     let uifn = new ShortUniqueId();
     let uid = id || uifn();
-    task_container.innerHTML = `<div class="color_bar ${color}"></div>
+    task_container.innerHTML = `<div class="color_bar ${color}">
+    <h4 class="uid">${uid}</h4>
+    </div>
     <div class="task_description">
     <div class= "task_header">
-        <h3 class="uid">${uid}</h3>
+        <h3 class="heading">${heading}</h3>
         <div class="task_icon_container">
             <i class="fas fa-pencil-alt"></i>
         </div>
@@ -189,7 +194,7 @@ function createTask(color, task, flag, id) {
     </div>`
     main_container.appendChild(task_container);
     if (flag == true) {  // it is from UI then add it to local storage
-        let obj = { "task": task, "color": color, "uid": uid };
+        let obj = { "task": task, "color": color, "uid": uid , "heading": heading};
         taskArr.push(obj);
         let finalArr = JSON.stringify(taskArr);
         localStorage.setItem("allTask", finalArr); // accepts key: value(string)
@@ -244,8 +249,9 @@ function expandFunction(e) {
         expandBtn.classList.add("task_icon_active");
         let task = task_area.innerText;    // extracting the text inside the container to display it in modal
         let color = expandBtn.parentNode.parentNode.parentNode.children[0];  // extracting colo and uid for the task container selected
-        let uid = expandBtn.parentNode.children[0];
-        createModal(task, true, color, uid, expandBtn);   // creating the expanded version
+        let uid = expandBtn.parentNode.parentNode.parentNode.children[0].children[0];
+        let heading = expandBtn.parentNode.children[0].innerText;
+        createModal(task, true, color, uid, heading, expandBtn);   // creating the expanded version
     }
 }
 
@@ -260,7 +266,7 @@ function changeColor(e) {
     color_bar.classList.add(colorArr[idx]);  // adding the next color in the list
 
     //updating the change in the local storage
-    let id = color_bar.parentNode.children[1].children[0].innerText;
+    let id = color_bar.children[0].innerText;
     for (let i = 0; i < taskArr.length; i++) {
         let { uid } = taskArr[i]
         if (uid == id) {
@@ -276,7 +282,8 @@ function changeColor(e) {
 //if their is any change in the task then update it on local storage
 function editTask(e) {
     let task_area = e.currentTarget;
-    let id = task_area.parentNode.children[0].innerText;          // to know the uid of the task clicked
+    let id = task_area.parentNode.parentNode.children[0].children[0].innerText;          // to know the uid of the task clicked
+    console.log(id)
     //comparing the id's to update it in the local storage
     for (let i = 0; i < taskArr.length; i++) {
         let { uid } = taskArr[i]
