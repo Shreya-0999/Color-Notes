@@ -251,7 +251,7 @@ div.modal_filter div.filter:hover{
     font-size: 1.2rem;
 }
 .task_icon_active{
-    box-shadow: inset 0 0 15px #1616167e;
+    box-shadow: inset 0 0 15px #0c0c0c7e;
     border-radius: 0.3rem;
 }
 .task_area{
@@ -275,10 +275,9 @@ div.modal_filter div.filter:hover{
 }
 .expandColorBar{
     height: 7%;
-    background-color: lightcoral;
 }
 .expandColorBar>.uid{
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     width: 10rem;
 }
 .expandTaskDesc{
@@ -295,11 +294,14 @@ div.modal_filter div.filter:hover{
     border-radius: 1rem;
 }
 .expandHeading{
-    background-color: rgb(238, 242, 247);
+    background-color: rgb(58, 56, 56);
     height: 15%;
-    padding: 1rem;
     border-radius: 0.5rem;
-    box-shadow: inset 0 0 10px #1f1e1e7e;
+    font-size: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #dbddd3;
 }
 .expandTaskArea{
     background-color: rgb(238, 242, 247);
@@ -307,6 +309,8 @@ div.modal_filter div.filter:hover{
     padding: 1rem;
     border-radius: 0.5rem;
     box-shadow: inset 0 0 10px #1f1e1e7e;
+    overflow: auto;
+    font-size: 1.5rem;
 }
 .expand_edits{
     width: 10%;
@@ -338,6 +342,10 @@ div.modal_filter div.filter:hover{
 .expand_icon_container:hover{
     transform: scale(1.1);
 }
+.expandIcon_Active{
+    background-color: rgb(136, 138, 135);
+    box-shadow: inset 0 0 15px #d4d1d17e;
+}
 
 /* ----------Responsive----------- */
 @media only screen and (max-width: 700px) {
@@ -363,5 +371,17 @@ div.modal_filter div.filter:hover{
     .modal_container{
         height: 16rem;
         width: 33rem;
+    }
+    .expand_container{
+        height: 20rem;
+        width: 35rem;
+        left: calc((100vw - 35rem)/2);
+        top:30vh
+    }
+    .expandColorBar>.uid{
+        font-size: 1rem;
+    }
+    .expand_edits>.enter{
+        font-size: 0.9rem;
     }
 }
