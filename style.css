@@ -255,10 +255,17 @@ div.modal_filter div.filter:hover{
     border-radius: 0.3rem;
 }
 .task_area{
-    height: 65%;
+    height: 60%;
     overflow: auto;
     word-break: break-all;   /* to break the words */
     text-align: center;
+}
+.date{
+    color: rgb(124, 121, 121);
+    display: flex;
+    justify-content: center;
+    font-size: 0.8rem;
+
 }
 
 /* -------------Expand Container ----------------- */

@@ -14,9 +14,9 @@ let taskArr = [];
 if (localStorage.getItem("allTask")) {
     taskArr = JSON.parse(localStorage.getItem("allTask"));   // to convert the string recived to an object
     for (let i = 0; i < taskArr.length; i++) {
-        let { color, task, uid, heading } = taskArr[i];
+        let { color, task, uid, heading, date } = taskArr[i];
         // to display it on UI
-        createTask(color, task, false, heading, uid); // false to tell that its from local storage
+        createTask(color, task, false, heading, date, uid); // false to tell that its from local storage
     }
 }
 
@@ -123,18 +123,25 @@ function handleModal(modal_container) {
     let enterBtn = modal_container.querySelector(".enter");
     let input_area = modal_container.querySelector(".modal_input");
     let header_input = modal_container.querySelector(".modal_heading");
+    let dateobj = new Date;
+    let hours = dateobj;
+    let minutes = dateobj.getMinutes();
+    let ampm = dateobj >= 12 ? 'pm' : 'am';
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    let date = hours + ':' + minutes + ' ' + ampm;
+    date = date.split("GMT")[0];
     enterBtn.addEventListener("click", function (e) {
         if (input_area.innerText != null) {   // as the enter bttn is pressed perform following task
             plusBtn.classList.remove("active");
             modal_container.remove();         // removing the modal container
             main_container.style.opacity = 1;
-            createTask(current_color, input_area.value, true, header_input.value);   // creating the task on the body with the color and the task entered(true : to tell its entered from the UI not local storage)
+            createTask(current_color, input_area.value, true, header_input.value, date);   // creating the task on the body with the color and the task entered(true : to tell its entered from the UI not local storage)
         }
     })
 }
 
 //---------------Creating and editing Task------------------------------------------------------------------------
-function createTask(color, task, flag, heading, id) {
+function createTask(color, task, flag, heading, date, id) {
     // creating the task container 
     let task_container = document.createElement("div");
     task_container.setAttribute("class", "task_container");
@@ -154,10 +161,11 @@ function createTask(color, task, flag, heading, id) {
         </div>
     </div>
         <div class="task_area">${task}</div>
+        <div class="date">${date}</div>
     </div>`
     main_container.appendChild(task_container);
     if (flag == true) {  // it is from UI then add it to local storage
-        let obj = { "task": task, "color": color, "uid": uid, "heading": heading };
+        let obj = { "task": task, "color": color, "uid": uid, "heading": heading , "date" :date};
         taskArr.push(obj);
         let finalArr = JSON.stringify(taskArr);
         localStorage.setItem("allTask", finalArr); // accepts key: value(string)
