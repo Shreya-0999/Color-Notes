@@ -13,31 +13,44 @@
 </head>
 
 <body>
-    <div class="navigation_container">
-        <div class="color_filter navigation">
-            <div class="filter">
-                <div class="pink color"></div>
+    <div class="body">
+        <div class="navigation_container">
+            <h1 class="name">Color Notes</h1>
+            <div class="color_filter navigation">
+                <div class="filter">
+                    <div class="pink color"></div>
+                </div>
+                <div class="filter">
+                    <div class="blue color"></div>
+                </div>
+                <div class="filter">
+                    <div class="green color"></div>
+                </div>
+                <div class="filter">
+                    <div class="black color"></div>
+                </div>
             </div>
-            <div class="filter">
-                <div class="blue color"></div>
-            </div>
-            <div class="filter">
-                <div class="green color"></div>
-            </div>
-            <div class="filter">
-                <div class="black color"></div>
+            <div class="editing_option navigation">
+                <div class="icon_container">
+                    <i class="fas fa-plus"></i>
+                        New Task
+                </div>
+                <div class="icon_container">
+                    <i class="fas fa-trash-alt"></i>
+                    Delete Task
+                </div>
             </div>
         </div>
-        <div class="editing_option navigation">
-            <div class="icon_container">
-                <i class="fas fa-plus"></i>
+        <div class="main_container">
+            <div class="text_container">
+                <div class="box_heading">TEXT</div>
+                <div class="text_display"></div>
             </div>
-            <div class="icon_container">
-                <i class="fas fa-trash-alt"></i>
+            <div class="checklist_container">
+                <div class="box_heading">CHECKLIST</div>
+                <div class="checklist_display"></div>
             </div>
         </div>
-    </div>
-    <div class="main_container">
     </div>
     <script src="https://cdn.jsdelivr.net/npm/short-unique-id@latest/dist/short-unique-id.min.js" defer></script>
     <script src="script.js" defer></script>
