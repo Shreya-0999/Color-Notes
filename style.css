@@ -137,6 +137,7 @@ div.icon_container:hover{
     align-items: center;
     font-size: 1.5rem;
     font-weight: bold;
+    color: rgba(29, 28, 28, 0.918);;
 }
 
 .text_display{
